@@ -1,7 +1,8 @@
-use clap::{CommandFactory, Parser, Subcommand};
-use std::path::{PathBuf};
 use clap::error::ErrorKind;
+use clap::{CommandFactory, Parser, Subcommand};
 use directories::UserDirs;
+use miette::{IntoDiagnostic, WrapErr};
+use std::path::PathBuf;
 
 /// A ClI for jotting down notes
 
@@ -32,23 +33,20 @@ enum Commands {
 /// get the user's jot directory, which by default
 /// is placed in their home dir
 fn get_default_jot_dir() -> Option<PathBuf> {
-    UserDirs::new()
-        .map(|dirs| dirs.home_dir().join("jot"))
+    UserDirs::new().map(|dirs| dirs.home_dir().join("jot"))
 }
 
-fn main() -> Result<(), std::io::Error> {
+fn main() -> miette::Result<()> {
     let args = Args::parse();
-    dbg!(&args);
 
-    let Some(jot_path) =
-        args.jot_path.or_else(get_default_jot_dir)
-    else {
+    let Some(jot_path) = args.jot_path.or_else(get_default_jot_dir) else {
         let mut cmd = Args::command();
         cmd.error(
             ErrorKind::ValueValidation,
-            "jot directory not provided and home directory unavailable for default jot directory".to_string(),
+            "jot directory not provided and home directory unavailable for default jot directory"
+                .to_string(),
         )
-            .exit()
+        .exit()
     };
     if !jot_path.exists() {
         let mut cmd = Args::command();
@@ -59,13 +57,12 @@ fn main() -> Result<(), std::io::Error> {
                 jot_path.display()
             ),
         )
-            .exit()
+        .exit()
     };
 
-
     match args.cmd {
-        Commands::Write { title} => {
-            jot::write(jot_path, title)
-        }
+        Commands::Write { title } => jot::write(jot_path, title)
+            .into_diagnostic()
+            .wrap_err("jot::write"),
     }
 }

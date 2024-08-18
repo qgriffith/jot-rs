@@ -7,6 +7,9 @@ edition = "2021"
 clap = { version = "4.5.16", features = ["env", "derive"] }
 directories = "5.0.1"
 edit = "0.1.5"
+miette = { version = "7.2.0", features = ["fancy"] }
 owo-colors = "4.0.0"
 rprompt = "2.1.1"
 slug = "0.1.6"
+tempfile = "3.12.0"
+thiserror = "1.0.63"

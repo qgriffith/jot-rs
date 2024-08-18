@@ -1,6 +1,23 @@
 use edit::{edit_file, Builder};
+use miette::Diagnostic;
 use owo_colors::OwoColorize;
 use std::{fs, io, io::Write, path::PathBuf};
+use thiserror::Error;
+
+#[derive(Error, Diagnostic, Debug)]
+pub enum JotVarietyError {
+    #[error(transparent)]
+    #[diagnostic(code(jot::io_error))]
+    IoError(#[from] std::io::Error),
+
+    #[error("failed to create tempfile: {0}")]
+    #[diagnostic(code(jot::tempfile_create_error))]
+    TempfileCreationError(std::io::Error),
+
+    #[error("failed to keep tempfile: {0}")]
+    #[diagnostic(code(jot::tempfile_keep_error))]
+    TempfileKeepError(#[from] tempfile::PersistError),
+}
 
 fn ask_for_filename() -> io::Result<String> {
     rprompt::prompt_reply(
@@ -40,7 +57,6 @@ pub fn write(jot_path: PathBuf, title: Option<String>) -> Result<(), std::io::Er
         .rand_bytes(5)
         .tempfile_in(&jot_path)?
         .keep()?;
-    dbg!(&filepath);
     let template = format!("# {}", title.as_deref().unwrap_or(""));
     file.write_all(template.as_bytes())?;
     edit_file(&filepath)?;
