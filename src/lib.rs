@@ -51,6 +51,13 @@ Do you want a different title? (y/{}): ",
     }
 }
 
+fn title_from_content(input: &str) -> Option<String> {
+    input
+        .lines()
+        .find(|v| v.starts_with("# "))
+        .map(|line| line.trim_start_matches("# ").to_string())
+}
+
 pub fn write(jot_path: PathBuf, title: Option<String>) -> Result<(), std::io::Error> {
     let (mut file, filepath) = Builder::new()
         .suffix(".md")
@@ -61,13 +68,7 @@ pub fn write(jot_path: PathBuf, title: Option<String>) -> Result<(), std::io::Er
     file.write_all(template.as_bytes())?;
     edit_file(&filepath)?;
     let contents = fs::read_to_string(&filepath)?;
-
-    let document_title = title.or_else(|| {
-        contents
-            .lines()
-            .find(|v| v.starts_with("# "))
-            .map(|line| line.trim_start_matches("# ").to_string())
-    });
+    let document_title = title.or_else(|| title_from_content(&contents));
 
     let filename = match document_title {
         Some(raw_title) => confirm_filename(&raw_title),
