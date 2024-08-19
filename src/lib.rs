@@ -4,6 +4,24 @@ use owo_colors::OwoColorize;
 use std::{fs, io, io::Write, path::PathBuf};
 use thiserror::Error;
 
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn title_from_empty_string() {
+        assert_eq!(title_from_content(""), None);
+    }
+
+    #[test]
+    fn title_from_content_string() {
+        assert_eq!(
+            title_from_content("# some title"),
+            Some("some title".to_string())
+        );
+    }
+}
+
 #[derive(Error, Diagnostic, Debug)]
 pub enum JotVarietyError {
     #[error(transparent)]
