@@ -20,6 +20,11 @@ mod tests {
             Some("some title".to_string())
         );
     }
+
+    #[test]
+    fn title_from_content_no_title() {
+        assert_eq!(title_from_content("# "), None);
+    }
 }
 
 #[derive(Error, Diagnostic, Debug)]
@@ -70,10 +75,10 @@ Do you want a different title? (y/{}): ",
 }
 
 fn title_from_content(input: &str) -> Option<String> {
-    input
-        .lines()
-        .find(|v| v.starts_with("# "))
-        .map(|line| line.trim_start_matches("# ").to_string())
+    input.lines().find_map(|line| {
+        line.strip_prefix("# ")
+            .and_then(|title| (!title.is_empty()).then_some(title.to_string()))
+    })
 }
 
 pub fn write(jot_path: PathBuf, title: Option<String>) -> Result<(), std::io::Error> {
