@@ -28,6 +28,13 @@ enum Commands {
         #[clap(short, long)]
         title: Option<String>,
     },
+    /// Running doc that appends text to the same file. Used as a scratch pad
+    /// to get thoughts into quickly. Perfect to use as a reminder for something
+    /// to work out later
+    Scratch {
+        #[clap(short, long)]
+        message: String,
+    },
 }
 
 /// get the user's jot directory, which by default
@@ -64,5 +71,8 @@ fn main() -> miette::Result<()> {
         Commands::Write { title } => jot::write(jot_path, title)
             .into_diagnostic()
             .wrap_err("jot::write"),
+        Commands::Scratch { message } => jot::scratch(jot_path, message)
+            .into_diagnostic()
+            .wrap_err("jot::scratch"),
     }
 }

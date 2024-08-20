@@ -115,3 +115,15 @@ pub fn write(jot_path: PathBuf, title: Option<String>) -> Result<(), std::io::Er
 
     Ok(())
 }
+
+pub fn scratch(jot_path: PathBuf, message: String) -> Result<(), std::io::Error> {
+    let mut scratch_path = jot_path.join("_scratch");
+    scratch_path.set_extension("md");
+
+    let mut scratch_file = fs::OpenOptions::new()
+        .create(true)
+        .append(true)
+        .open(scratch_path)?;
+    write!(&mut scratch_file, "\n{}", message)?;
+    Ok(())
+}
