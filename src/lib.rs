@@ -3,6 +3,7 @@ use miette::Diagnostic;
 use owo_colors::OwoColorize;
 use std::{fs, io, io::Write, path::PathBuf};
 use thiserror::Error;
+use walkdir::WalkDir;
 
 #[cfg(test)]
 mod tests {
@@ -125,5 +126,18 @@ pub fn scratch(jot_path: PathBuf, message: String) -> Result<(), std::io::Error>
         .append(true)
         .open(scratch_path)?;
     write!(&mut scratch_file, "\n{}", message)?;
+    Ok(())
+}
+
+pub fn search(jot_path: PathBuf, query: String) -> Result<(), std::io::Error> {
+    for entry in WalkDir::new(jot_path)
+        .into_iter()
+        .filter_map(|e| e.ok().and_then(|e2| e2.path().is_file().then_some(e2)))
+    {
+        let content = fs::read_to_string(&entry.path())?;
+        if query.is_empty() || content.contains(&query) {
+            println!("{}", entry.path().display())
+        }
+    }
     Ok(())
 }
