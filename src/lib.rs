@@ -129,6 +129,22 @@ pub fn scratch(jot_path: PathBuf, message: String) -> Result<(), std::io::Error>
     Ok(())
 }
 
+pub fn open(jot_path: PathBuf, title: String) -> Result<(), std::io::Error> {
+    let mut open_path = jot_path.join(title);
+    open_path.set_extension("md");
+    dbg!(&open_path);
+    if open_path.is_file() {
+        edit_file(&open_path)?;
+    } else {
+        println!(
+            "{} - {}",
+            "File not found".bold().red(),
+            &open_path.display()
+        );
+    }
+    Ok(())
+}
+
 pub fn search(jot_path: PathBuf, query: String) -> Result<(), std::io::Error> {
     let mut counter = 0;
     for entry in WalkDir::new(jot_path)

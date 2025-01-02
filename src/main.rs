@@ -31,6 +31,11 @@ enum Commands {
     /// Running jot doc that appends text to the same file. Used as a scratch pad
     /// to get thoughts into quickly. Perfect to use as a reminder for something
     /// to work out later. File name is _scratch.md
+    Open {
+        /// Open an existing file to write
+        #[clap(short, long)]
+        title: String,
+    },
     Scratch {
         #[clap(short, long)]
         message: String,
@@ -76,6 +81,9 @@ fn main() -> miette::Result<()> {
         Commands::New { title } => jot::write(jot_path, title)
             .into_diagnostic()
             .wrap_err("jot::write"),
+        Commands::Open { title } => jot::open(jot_path, title)
+            .into_diagnostic()
+            .wrap_err("jot::open"),
         Commands::Scratch { message } => jot::scratch(jot_path, message)
             .into_diagnostic()
             .wrap_err("jot::scratch"),
