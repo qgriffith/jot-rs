@@ -163,3 +163,13 @@ pub fn search(jot_path: PathBuf, query: String) -> Result<(), std::io::Error> {
     }
     Ok(())
 }
+
+pub fn list(jot_path: PathBuf) -> Result<(), std::io::Error> {
+    for entry in WalkDir::new(jot_path)
+        .into_iter()
+        .filter_map(|e| e.ok().and_then(|e2| e2.path().is_file().then_some(e2)))
+    {
+        println!("{}", entry.path().display().bold().green());
+    }
+    Ok(())
+}

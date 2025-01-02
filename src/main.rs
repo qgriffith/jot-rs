@@ -45,6 +45,7 @@ enum Commands {
         #[clap(short, long)]
         query: String,
     },
+    List {},
 }
 
 /// get the user's jot directory, which by default
@@ -90,5 +91,6 @@ fn main() -> miette::Result<()> {
         Commands::Search { query } => jot::search(jot_path, query)
             .into_diagnostic()
             .wrap_err("jot::search"),
+        Commands::List {} => jot::list(jot_path).into_diagnostic().wrap_err("jot::list"),
     }
 }
