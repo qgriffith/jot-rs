@@ -18,19 +18,19 @@ struct Args {
 
 #[derive(Subcommand, Debug)]
 enum Commands {
-    /// jot something down
+    /// jot something new down
     ///
     /// This command will open your $EDITOR, wait for you
     /// to write something, and then save the file to your
-    /// jot
-    Write {
+    /// jot. This is to create a new file and save it
+    New {
         /// Optionally set a title for what you are going to write about
         #[clap(short, long)]
         title: Option<String>,
     },
-    /// Running doc that appends text to the same file. Used as a scratch pad
+    /// Running jot doc that appends text to the same file. Used as a scratch pad
     /// to get thoughts into quickly. Perfect to use as a reminder for something
-    /// to work out later
+    /// to work out later. File name is _scratch.md
     Scratch {
         #[clap(short, long)]
         message: String,
@@ -73,7 +73,7 @@ fn main() -> miette::Result<()> {
     };
 
     match args.cmd {
-        Commands::Write { title } => jot::write(jot_path, title)
+        Commands::New { title } => jot::write(jot_path, title)
             .into_diagnostic()
             .wrap_err("jot::write"),
         Commands::Scratch { message } => jot::scratch(jot_path, message)
