@@ -130,14 +130,20 @@ pub fn scratch(jot_path: PathBuf, message: String) -> Result<(), std::io::Error>
 }
 
 pub fn search(jot_path: PathBuf, query: String) -> Result<(), std::io::Error> {
+    let mut counter = 0;
     for entry in WalkDir::new(jot_path)
         .into_iter()
         .filter_map(|e| e.ok().and_then(|e2| e2.path().is_file().then_some(e2)))
     {
         let content = fs::read_to_string(&entry.path())?;
-        if query.is_empty() || content.contains(&query) {
-            println!("{}", entry.path().display())
+        if content.contains(&query) {
+            println!("{}", entry.path().display().bold().green());
+            counter += 1;
         }
+    }
+    // Counter is zero so that must mean the search didn't find anything
+    if counter == 0 {
+        println!("{}", "No results found".bold().red());
     }
     Ok(())
 }
