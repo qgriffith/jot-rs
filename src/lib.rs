@@ -305,7 +305,7 @@ pub fn open(jot_path: PathBuf, title: String) -> Result<(), std::io::Error> {
 /// # Arguments
 ///
 /// * `jot_path` - A [`PathBuf`] representing the directory to search.
-/// * `query` - A [`String`] representing the text to search for within the files.
+/// * `query` - A [Vec<`String`>] representing the text to search for within the files.
 ///
 /// # Return
 ///
@@ -325,14 +325,14 @@ pub fn open(jot_path: PathBuf, title: String) -> Result<(), std::io::Error> {
 /// - Returns an error if the directory cannot be read,
 ///   or if the contents of any file fail to be read.
 ///
-pub fn search(jot_path: PathBuf, query: String) -> Result<(), std::io::Error> {
+pub fn search(jot_path: PathBuf, query: Vec<String>) -> Result<(), std::io::Error> {
     let mut counter = 0;
     for entry in WalkDir::new(jot_path)
         .into_iter()
         .filter_map(|e| e.ok().and_then(|e2| e2.path().is_file().then_some(e2)))
     {
         let content = fs::read_to_string(&entry.path())?;
-        if content.contains(&query) {
+        if query.iter().any(|q| content.contains(q)) {
             println!("{}", entry.path().display().bold().green());
             counter += 1;
         }

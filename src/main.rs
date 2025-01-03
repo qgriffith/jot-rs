@@ -42,10 +42,10 @@ enum Commands {
         #[clap(short, long)]
         message: String,
     },
-    /// Search documents for a string of text
+    /// Search documents for a string of text. query can be passed several times
     Search {
         #[clap(short, long)]
-        query: String,
+        query: Vec<String>,
     },
     /// List all files in your jot dir
     List {},
@@ -129,6 +129,9 @@ fn get_default_jot_dir() -> Option<PathBuf> {
 ///
 /// # Search for a term across all notes in the directory
 /// jot search --query "reminder"
+///
+/// # Search for several terms across all notes in the directory
+/// jot search --query "reminder" --query "due"
 /// ```
 fn main() -> miette::Result<()> {
     let args = Args::parse();
