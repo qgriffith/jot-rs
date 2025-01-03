@@ -158,18 +158,20 @@ fn main() -> miette::Result<()> {
     };
 
     match args.cmd {
-        Commands::New { title } => jot::write(jot_path, title)
+        Commands::New { title } => jot_note::write(jot_path, title)
             .into_diagnostic()
-            .wrap_err("jot::write"),
-        Commands::Open { title } => jot::open(jot_path, title)
+            .wrap_err("jot-note::write"),
+        Commands::Open { title } => jot_note::open(jot_path, title)
             .into_diagnostic()
-            .wrap_err("jot::open"),
-        Commands::Scratch { message } => jot::scratch(jot_path, message)
+            .wrap_err("jot-note::open"),
+        Commands::Scratch { message } => jot_note::scratch(jot_path, message)
             .into_diagnostic()
-            .wrap_err("jot::scratch"),
-        Commands::Search { query } => jot::search(jot_path, query)
+            .wrap_err("jot-note::scratch"),
+        Commands::Search { query } => jot_note::search(jot_path, query)
             .into_diagnostic()
-            .wrap_err("jot::search"),
-        Commands::List {} => jot::list(jot_path).into_diagnostic().wrap_err("jot::list"),
+            .wrap_err("jot-note::search"),
+        Commands::List {} => jot_note::list(jot_path)
+            .into_diagnostic()
+            .wrap_err("jot-note::list"),
     }
 }

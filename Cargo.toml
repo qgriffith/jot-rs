@@ -1,5 +1,5 @@
 [package]
-name = "jot-note"
+name = "jot_note"
 version = "0.1.2"
 edition = "2021"
 author = "Quenten Griffith <qgriffith@gmail.com>"
@@ -12,6 +12,7 @@ homepage = "https://github.com/qgriffith/jot-rs"
 
 [[bin]]
 name = "jot"
+path = "src/main.rs"
 
 [dependencies]
 clap = { version = "4.5.23", features = ["env", "derive"] }
