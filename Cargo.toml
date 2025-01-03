@@ -2,6 +2,14 @@
 name = "jot"
 version = "0.1.2"
 edition = "2021"
+author = "Quenten Griffith <qgriffith@gmail.com>"
+description = "Jot Note Taking CLI"
+license = "MIT"
+keywords = ["jot", "binary", "notes", "cli"]
+readme = "README.md"
+repository = "https://github.com/qgriffith/jot-rs"
+homepage = "https://github.com/qgriffith/jot-rs"
+
 
 [dependencies]
 clap = { version = "4.5.23", features = ["env", "derive"] }
