@@ -10,6 +10,8 @@ readme = "README.md"
 repository = "https://github.com/qgriffith/jot-rs"
 homepage = "https://github.com/qgriffith/jot-rs"
 
+[[bin]]
+name = "jot"
 
 [dependencies]
 clap = { version = "4.5.23", features = ["env", "derive"] }
