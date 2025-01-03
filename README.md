@@ -1,6 +1,6 @@
 # Jot
-[<img alt="crates.io" src="https://img.shields.io/crates/v/strava-client-rs.svg?style=for-the-badge&color=fc8d62&logo=rust" height="20">](https://crates.io/crates/jot-rs)
-[<img alt="docs.rs" src="https://img.shields.io/badge/docs.rs-strava-66c2a5?style=for-the-badge&labelColor=555555&logo=docs.rs" height="20">](https://docs.rs/jot-rs)
+[<img alt="crates.io" src="https://img.shields.io/crates/v/jot_note.svg?style=for-the-badge&color=fc8d62&logo=rust" height="20">](https://crates.io/crates/jot_note)
+[<img alt="docs.rs" src="https://img.shields.io/badge/docs.rs-jot_note-66c2a5?style=for-the-badge&labelColor=555555&logo=docs.rs" height="20">](https://docs.rs/jot_note)
 ## About
 A CLI to quickly create notes in the **markdown** format. It can create new notes,
 or open exiting ones to edit. It can also search for a keyword and display all 
