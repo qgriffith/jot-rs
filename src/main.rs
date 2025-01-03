@@ -28,14 +28,16 @@ enum Commands {
         #[clap(short, long)]
         title: Option<String>,
     },
-    /// Running jot doc that appends text to the same file. Used as a scratch pad
-    /// to get thoughts into quickly. Perfect to use as a reminder for something
-    /// to work out later. File name is _scratch.md
+    /// Running jot doc that appends text to the same file.
     Open {
         /// Open an existing file to write
         #[clap(short, long)]
         title: String,
     },
+    /// Used as a scratch pad
+    ///
+    /// To get thoughts into quickly. Perfect to use as a reminder for something
+    /// to work out later. File name is _scratch.md
     Scratch {
         #[clap(short, long)]
         message: String,
@@ -45,6 +47,7 @@ enum Commands {
         #[clap(short, long)]
         query: String,
     },
+    /// List all files in your jot dir
     List {},
 }
 
