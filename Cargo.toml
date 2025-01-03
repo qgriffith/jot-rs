@@ -1,5 +1,5 @@
 [package]
-name = "jot"
+name = "jot-note"
 version = "0.1.2"
 edition = "2021"
 author = "Quenten Griffith <qgriffith@gmail.com>"
